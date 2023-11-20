@@ -1,5 +1,7 @@
 # Environment variables
 .env
+*.pem
+*.hcl
 # Local .terraform directories
 **/.terraform/*
 
