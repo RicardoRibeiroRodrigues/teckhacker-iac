@@ -6,23 +6,28 @@ sudo apt-get install -y python3-venv python3-dev nginx libpq-dev build-essential
 
 # Set needed environment variables
 echo "export DB_HOST='${db_sv_ip}'" >> /home/ubuntu/.bashrc
-echo "export DB_URL='postgresql://${db_sv_ip}/${db_name}?user=${db_user}&password=${db_pass}'" >> /home/ubuntu/.bashrc
+echo "export DB_URL='postgresql://${db_sv_ip}/${db_name}?user=${db_user}&password=${db_pass}'" >> /home/ubuntu/.ENV_VARS
 # Get public ip from AWS metadata
-echo "export PUBLIC_IP='$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)'" >> /home/ubuntu/.bashrc
-# Restart bash
-source /home/ubuntu/.bashrc
-
+echo "export PUBLIC_IP='$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)'" >> /home/ubuntu/.ENV_VARS
 # Go to home directory
 cd /home/ubuntu
 # Create a .DJANGO_SECRET_KEY file with a random secret key
-echo "export SECRET_KEY='$(openssl rand -hex 40)'" > .DJANGO_SECRET_KEY
-source .DJANGO_SECRET_KEY
+echo "export SECRET_KEY='$(openssl rand -hex 40)'" >> /home/ubuntu/.ENV_VARS
+# Copy the .ENV_VARS content to end of .bashrc
+cat /home/ubuntu/.ENV_VARS >> /home/ubuntu/.bashrc
+# Restart bash
+source /home/ubuntu/.bashrc
+
 git clone https://github.com/RicardoRibeiroRodrigues/get-it-django
 python3 -m venv env
 . env/bin/activate
+# Gunicorn with envs from .ENV_VARS
+source /home/ubuntu/.ENV_VARS
+echo $DB_URL
+echo $PUBLIC_IP
+
 cd get-it-django
 pip install -r requirements.txt
-python manage.py migrate
 
 sudo mkdir -pv /var/{log,run}/gunicorn/
 sudo chown -cR ubuntu:ubuntu /var/{log,run}/gunicorn/
@@ -60,11 +65,14 @@ cd /home/ubuntu/get-it-django
 python manage.py collectstatic --noinput
 
 # Restart nginx
-sudo systemctl start nginx
 sudo systemctl enable nginx
+sudo systemctl restart nginx
 
 # Guacamole client
 echo "PubkeyAcceptedKeyTypes +ssh-rsa" | sudo tee -a /etc/ssh/sshd_config
 echo "KexAlgorithms +diffie-hellman-group14-sha1" | sudo tee -a /etc/ssh/sshd_config
 echo "HostKeyAlgorithms +ssh-rsa" | sudo tee -a /etc/ssh/sshd_config
 sudo systemctl restart ssh
+
+# For last: wait for db to be ready, and run migrations
+python manage.py migrate

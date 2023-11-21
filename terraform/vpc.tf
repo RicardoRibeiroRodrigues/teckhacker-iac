@@ -13,6 +13,7 @@ resource "aws_vpc" "application_vpc" {
 resource "aws_subnet" "app_subnet" {
   vpc_id     = aws_vpc.application_vpc.id
   cidr_block = "10.0.0.0/28"
+  availability_zone = "us-east-1a"
 
   tags = {
     Name = "Application Subnet"

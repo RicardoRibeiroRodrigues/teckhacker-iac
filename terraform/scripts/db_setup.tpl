@@ -1,16 +1,16 @@
 #!/bin/bash
-
 # Remover o pacote needrestart
 sudo apt -y remove needrestart
 
 # Update package list
-sudo apt update -y
+sudo apt update && sudo apt upgrade -y
 
 # Install PostgreSQL and its dependencies
 sudo apt install -y postgresql postgresql-contrib
 
 sudo chmod 755 /home/ubuntu
 # Switch to the PostgreSQL user
+cd /tmp
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${db_pass}';"
 
 # Create a new PostgreSQL database and user

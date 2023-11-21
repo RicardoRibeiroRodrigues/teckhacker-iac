@@ -22,3 +22,21 @@ variable "GUAC_PASS" {
   type        = string
   description = "Guacamole password"
 }
+
+variable "db_allocated_storage" {
+  type        = number
+  description = "The allocated storage in gigabytes"
+  default     = 30
+}
+
+variable "db_max_allocated_storage" {
+  type        = number
+  description = "The max allocated storage in gigabytes"
+  default     = 150
+}
+
+variable "db_engine" {
+  type        = string
+  description = "The database engine"
+  default     = "postgres"
+}
