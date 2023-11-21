@@ -44,3 +44,34 @@ resource "aws_route_table_association" "subnet_route_table_association" {
   subnet_id      = aws_subnet.app_subnet.id
   route_table_id = aws_route_table.app_route_table.id
 }
+
+
+# resource "aws_eip" "nat_gateway" {
+#   domain = "vpc"
+# }
+
+# resource "aws_nat_gateway" "nat_gw" {
+#   allocation_id = aws_eip.nat_gateway.id
+#   subnet_id     = aws_subnet.app_subnet.id
+
+#   tags = {
+#     Name = "gw NAT"
+#   }
+
+#   # To ensure proper ordering, it is recommended to add an explicit dependency
+#   # on the Internet Gateway for the VPC.
+#   depends_on = [ aws_internet_gateway.app_gateway ]
+# }
+
+# resource "aws_route_table" "instance" {
+#   vpc_id = aws_vpc.vpc.id
+#   route {
+#     cidr_block = "0.0.0.0/0"
+#     nat_gateway_id = aws_nat_gateway.nat_gw.id
+#   }
+# }
+
+# resource "aws_route_table_association" "instance" {
+#   subnet_id = aws_subnet.app_subnet.id
+#   route_table_id = aws_route_table.instance.id
+# }

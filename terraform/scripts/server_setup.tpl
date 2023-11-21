@@ -75,4 +75,10 @@ echo "HostKeyAlgorithms +ssh-rsa" | sudo tee -a /etc/ssh/sshd_config
 sudo systemctl restart ssh
 
 # For last: wait for db to be ready, and run migrations
-python manage.py migrate
+cd /home/ubuntu/get-it-django
+until python manage.py migrate; do
+  echo "Aguarda banco." >> /home/ubuntu/wait_db.log
+  sleep 10
+done
+
+echo "Banco pronto." >> /home/ubuntu/wait_db.log

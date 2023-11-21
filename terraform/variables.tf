@@ -23,6 +23,11 @@ variable "GUAC_PASS" {
   description = "Guacamole password"
 }
 
+variable "ZABBIX_PASS" {
+  type        = string
+  description = "Zabbix password"
+}
+
 variable "db_allocated_storage" {
   type        = number
   description = "The allocated storage in gigabytes"

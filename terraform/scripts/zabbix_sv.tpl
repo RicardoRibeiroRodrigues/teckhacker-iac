@@ -22,7 +22,7 @@ sudo apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabb
 # Configurar o MySQL para o Zabbix
 sudo mysql <<EOF
 CREATE DATABASE zabbix character set utf8mb4 collate utf8mb4_bin;
-CREATE USER zabbix@localhost IDENTIFIED BY 'password';
+CREATE USER zabbix@localhost IDENTIFIED BY '${zabbix_pass}';
 GRANT ALL PRIVILEGES ON zabbix.* TO zabbix@localhost;
 SET GLOBAL log_bin_trust_function_creators = 1;
 FLUSH PRIVILEGES;
@@ -51,7 +51,7 @@ sudo apt install language-pack-en -y
 DB_HOST="localhost"
 DB_NAME="zabbix"
 DB_USER="zabbix"
-DB_PASSWORD="password"
+DB_PASSWORD="${zabbix_pass}"
 
 # Configuração do Zabbix frontend
 FRONTEND_HOST="localhost"

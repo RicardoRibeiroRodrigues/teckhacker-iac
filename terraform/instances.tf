@@ -84,10 +84,21 @@ resource "aws_instance" "db_server" {
   key_name               = aws_key_pair.db_server_key_pair.key_name
   vpc_security_group_ids = [ aws_security_group.local_network_security_group.id ]
 
+  # Allocate and associate an Elastic IP
+  associate_public_ip_address = true
+
   user_data = data.template_file.db_server.rendered
 
   tags = {
     Name = "Database Server"
+  }
+}
+
+data "template_file" "zabbix_server" {
+  template = file("scripts/zabbix_sv.tpl")
+  vars = {
+    zabbix_pass = var.ZABBIX_PASS
+
   }
 }
 
