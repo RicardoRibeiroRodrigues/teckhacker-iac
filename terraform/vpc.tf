@@ -11,8 +11,8 @@ resource "aws_vpc" "application_vpc" {
 
 # Create Subnet
 resource "aws_subnet" "app_subnet" {
-  vpc_id     = aws_vpc.application_vpc.id
-  cidr_block = "10.0.0.0/28"
+  vpc_id            = aws_vpc.application_vpc.id
+  cidr_block        = "10.0.0.0/28"
   availability_zone = "us-east-1a"
 
   tags = {
@@ -45,33 +45,28 @@ resource "aws_route_table_association" "subnet_route_table_association" {
   route_table_id = aws_route_table.app_route_table.id
 }
 
+# Create Elastic IP for NAT Gateway
+resource "aws_eip" "nat_gateway" {
+}
 
-# resource "aws_eip" "nat_gateway" {
-#   domain = "vpc"
-# }
+# Create NAT Gateway
+resource "aws_nat_gateway" "nat_gateway" {
+  allocation_id = aws_eip.nat_gateway.id
+  subnet_id     = aws_subnet.app_subnet.id
+}
 
-# resource "aws_nat_gateway" "nat_gw" {
-#   allocation_id = aws_eip.nat_gateway.id
-#   subnet_id     = aws_subnet.app_subnet.id
+# Create a route table for the private subnet
+resource "aws_route_table" "private_route_table" {
+  vpc_id = aws_vpc.application_vpc.id
 
-#   tags = {
-#     Name = "gw NAT"
-#   }
+  tags = {
+    Name = "Application Private Route Table"
+  }
+}
 
-#   # To ensure proper ordering, it is recommended to add an explicit dependency
-#   # on the Internet Gateway for the VPC.
-#   depends_on = [ aws_internet_gateway.app_gateway ]
-# }
-
-# resource "aws_route_table" "instance" {
-#   vpc_id = aws_vpc.vpc.id
-#   route {
-#     cidr_block = "0.0.0.0/0"
-#     nat_gateway_id = aws_nat_gateway.nat_gw.id
-#   }
-# }
-
-# resource "aws_route_table_association" "instance" {
-#   subnet_id = aws_subnet.app_subnet.id
-#   route_table_id = aws_route_table.instance.id
-# }
+# Add a default route to the NAT Gateway in the private route table
+resource "aws_route" "private_route" {
+  route_table_id         = aws_route_table.private_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.nat_gateway.id
+}

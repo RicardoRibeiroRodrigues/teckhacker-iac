@@ -43,6 +43,7 @@ data "template_file" "web_server" {
     db_name  = var.DB_NAME
     db_user  = var.DB_USER
     db_pass  = var.DB_PASS
+    zabbix_ip = aws_instance.zabbix_server.private_ip
   }
 }
 
@@ -73,19 +74,17 @@ data "template_file" "db_server" {
     db_name = var.DB_NAME
     db_user = var.DB_USER
     db_pass = var.DB_PASS
+    zabbix_ip = aws_instance.zabbix_server.private_ip
   }
 }
 
 
 resource "aws_instance" "db_server" {
-  ami                    = "ami-0fc5d935ebf8bc3bc"
+  ami                    = "ami-0bab78756ec715f44"
   instance_type          = "t2.small"
   subnet_id              = aws_subnet.app_subnet.id
   key_name               = aws_key_pair.db_server_key_pair.key_name
   vpc_security_group_ids = [ aws_security_group.local_network_security_group.id ]
-
-  # Allocate and associate an Elastic IP
-  associate_public_ip_address = true
 
   user_data = data.template_file.db_server.rendered
 
@@ -115,4 +114,6 @@ resource "aws_instance" "zabbix_server" {
   tags = {
     Name = "Zabbix Server"
   }
+
+  user_data = data.template_file.zabbix_server.rendered
 }

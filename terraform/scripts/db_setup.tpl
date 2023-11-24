@@ -2,11 +2,11 @@
 # Remover o pacote needrestart
 sudo apt -y remove needrestart
 
-# Update package list
-sudo apt update && sudo apt upgrade -y
+# # Update package list
+# sudo apt update && sudo apt upgrade -y
 
-# Install PostgreSQL and its dependencies
-sudo apt install -y postgresql postgresql-contrib
+# # Install PostgreSQL and its dependencies
+# sudo apt install -y postgresql postgresql-contrib
 
 sudo chmod 755 /home/ubuntu
 # Switch to the PostgreSQL user
@@ -40,3 +40,19 @@ echo "KexAlgorithms +diffie-hellman-group14-sha1" | sudo tee -a /etc/ssh/sshd_co
 echo "HostKeyAlgorithms +ssh-rsa" | sudo tee -a /etc/ssh/sshd_config
 
 sudo systemctl restart ssh
+
+# Install Zabbix Agent
+
+sudo sed -i 's/Server=127.0.0.1/Server=${zabbix_ip}/' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i 's/ServerActive=127.0.0.1/ServerActive=${zabbix_ip}/' /etc/zabbix/zabbix_agentd.conf
+
+sudo sed -i 's/Hostname=Zabbix server/Hostname=BancoDeDados/' /etc/zabbix/zabbix_agentd.conf
+
+sudo sed -i 's/# TLSConnect=unencryp/TLSConnect=psk/' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i 's/# TLSAccept=unencrypted/TLSAccept=psk/' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i 's/# TLSPSKIdentity=/TLSPSKIdentity=PSK 001/' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i 's/# TLSPSKFile/TLSPSKFile=/etc/zabbix/zabbix_agentd.psk/' /etc/zabbix/zabbix_agentd.conf
+
+sudo systemctl start zabbix-agent
+sudo systemctl enable zabbix-agent
+sudo systemctl restart zabbix-agent
