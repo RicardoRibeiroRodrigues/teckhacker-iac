@@ -43,16 +43,8 @@ sudo systemctl restart ssh
 
 # Install Zabbix Agent
 
-sudo sed -i 's/Server=127.0.0.1/Server=${zabbix_ip}/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/ServerActive=127.0.0.1/ServerActive=${zabbix_ip}/' /etc/zabbix/zabbix_agentd.conf
+sudo sed -i "s/Server=127.0.0.1/Server=${zabbix_ip}/" /etc/zabbix/zabbix_agentd.conf
+sudo sed -i "s/ServerActive=127.0.0.1/ServerActive=${zabbix_ip}/" /etc/zabbix/zabbix_agentd.conf
+sudo sed -i "s/Hostname=Zabbix server/Hostname=${name}/" /etc/zabbix/zabbix_agentd.conf
 
-sudo sed -i 's/Hostname=Zabbix server/Hostname=BancoDeDados/' /etc/zabbix/zabbix_agentd.conf
-
-sudo sed -i 's/# TLSConnect=unencryp/TLSConnect=psk/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/# TLSAccept=unencrypted/TLSAccept=psk/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/# TLSPSKIdentity=/TLSPSKIdentity=PSK 001/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/# TLSPSKFile/TLSPSKFile=/etc/zabbix/zabbix_agentd.psk/' /etc/zabbix/zabbix_agentd.conf
-
-sudo systemctl start zabbix-agent
-sudo systemctl enable zabbix-agent
 sudo systemctl restart zabbix-agent

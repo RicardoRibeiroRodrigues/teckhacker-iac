@@ -12,8 +12,8 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install apache2 mysql-server php php-pear php-cgi php-common libapache2-mod-php php-mbstring php-net-socket php-gd php-xml-util php-mysql php-bcmath -y
 
 # Instalar o repositório do Zabbix
-wget wget https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4+ubuntu22.04_all.deb
-sudo dpkg -i zabbix-release_6.0-4+ubuntu22.04_all.deb
+wget https://repo.zabbix.com/zabbix/6.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.2-2%2Bubuntu22.04_all.deb
+sudo dpkg -i zabbix-release_6.2-2+ubuntu22.04_all.deb
 sudo apt update
 
 # Instalar o Zabbix Server, Frontend e Agent

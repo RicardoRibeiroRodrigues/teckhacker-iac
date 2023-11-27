@@ -43,6 +43,7 @@ data "template_file" "web_server" {
     db_user   = var.DB_USER
     db_pass   = var.DB_PASS
     zabbix_ip = aws_instance.zabbix_server.private_ip
+    name = "Web Server"
   }
 }
 
@@ -75,12 +76,13 @@ data "template_file" "db_server" {
     db_user   = var.DB_USER
     db_pass   = var.DB_PASS
     zabbix_ip = aws_instance.zabbix_server.private_ip
+    name = "Database Server"
   }
 }
 
 
 resource "aws_instance" "db_server" {
-  ami                    = "ami-0bab78756ec715f44" # AMI created with PostgresSQL installed
+  ami                    = "ami-08ac0d2fc5ba15aa6" # AMI created with PostgresSQL installed
   instance_type          = "t2.small"
   subnet_id              = aws_subnet.app_subnet.id
   key_name               = aws_key_pair.db_server_key_pair.key_name
