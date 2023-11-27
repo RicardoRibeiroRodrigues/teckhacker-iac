@@ -2,6 +2,8 @@
 .env
 *.pem
 *.hcl
+# Hidden files
+.*
 # Local .terraform directories
 **/.terraform/*
 

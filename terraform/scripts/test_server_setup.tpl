@@ -35,6 +35,8 @@ python3 -m venv env
 . env/bin/activate
 # Gunicorn with envs from .ENV_VARS
 source /home/ubuntu/.ENV_VARS
+echo $DB_URL
+echo $PUBLIC_IP
 
 cd get-it-django
 pip install -r requirements.txt
@@ -92,28 +94,6 @@ until python manage.py migrate; do
 done
 
 echo "Banco pronto." >> /home/ubuntu/wait_db.log
-
-# Install Zabbix Agent
-
-wget https://cdn.zabbix.com/zabbix/binaries/stable/6.2/6.2.9/zabbix_agent-6.2.9-linux-3.0-amd64-static.tar.gz
-sudo dpkg -i zabbix_agent-6.2.9-linux-3.0-amd64-static.tar.gz
-sudo apt update
-
-sudo apt install zabbix-agent -y
-
-sudo sed -i 's/Server=127.0.0.1/Server=${zabbix_ip}/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/ServerActive=127.0.0.1/ServerActive=${zabbix_ip}/' /etc/zabbix/zabbix_agentd.conf
-
-sudo sed -i 's/Hostname=Zabbix server/Hostname=WebServer/' /etc/zabbix/zabbix_agentd.conf
-
-sudo sed -i 's/# TLSConnect=unencryp/TLSConnect=psk/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/# TLSAccept=unencrypted/TLSAccept=psk/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/# TLSPSKIdentity=/TLSPSKIdentity=PSK 002/' /etc/zabbix/zabbix_agentd.conf
-sudo sed -i 's/# TLSPSKFile/TLSPSKFile=/etc/zabbix/zabbix_agentd.psk/' /etc/zabbix/zabbix_agentd.conf
-
-sudo systemctl start zabbix-agent
-sudo systemctl enable zabbix-agent
-sudo systemctl restart zabbix-agent
 
 # Download and install CodeDeploy agent
 cd /home/ubuntu

@@ -1,0 +1,39 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Before running tests"
+      - pip install -r requirements.txt
+      - export PUBLIC_IP='$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)'
+      - export SECRET_KEY='$(openssl rand -hex 40)'
+      - sudo apt-get update -y && sudo apt-get install -y postgresql postgresql-contrib
+      - sudo service postgresql start
+      - sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${db_pass}';"
+
+      # Create a new PostgreSQL database and user
+      - sudo -u postgres psql -c "CREATE DATABASE ${db_name};"
+      - sudo -u postgres psql -c "CREATE USER ${db_user} WITH PASSWORD '${db_pass}';"
+      - sudo -u postgres psql -c "ALTER ROLE ${db_user} SET client_encoding TO 'utf8';"
+      - sudo -u postgres psql -c "ALTER ROLE ${db_user} SET default_transaction_isolation TO 'read committed';"
+      - sudo -u postgres psql -c "ALTER ROLE ${db_user} SET timezone TO 'UTC';"
+      - sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ${db_name} TO ${db_user};"
+      - sudo -u postgres psql -c "ALTER USER ${db_user} CREATEDB;"
+      - sudo service postgresql restart
+  build:
+    commands:
+      - echo "Running all unit tests"
+      - python manage.py test
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - '**/*'
+cache:
+  paths:
+    - '/root/.cache/pip/**/*'
+    - '/var/cache/apt/archives/**/*'
+    - '/var/lib/apt/lists/**/*'
+    - '/usr/lib/python3/dist-packages/**/*'
+    - '/etc/apt/sources.list'

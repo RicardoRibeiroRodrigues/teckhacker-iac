@@ -60,3 +60,19 @@ resource "aws_key_pair" "zabbix_server_key_pair" {
   key_name   = "zabbix_server_key_pair"
   public_key = tls_private_key.zabbix_server_rsa.public_key_openssh
 }
+
+# Test server key pair
+resource "tls_private_key" "test_server_rsa" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "local_file" "test_server_key_pair" {
+  content  = tls_private_key.test_server_rsa.private_key_pem
+  filename = "test_server_key_pair.pem"
+}
+
+resource "aws_key_pair" "test_server_key_pair" {
+  key_name   = "test_server_key_pair"
+  public_key = tls_private_key.test_server_rsa.public_key_openssh
+}

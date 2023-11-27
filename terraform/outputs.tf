@@ -18,3 +18,7 @@ output "template_rendered_web" {
 output "template_rendered_js" {
   value = data.template_file.user_data.rendered
 }
+
+output "test_server_public_ip" {
+  value = "Test server IP: ${aws_instance.test_server.public_ip}"
+}

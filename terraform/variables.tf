@@ -28,20 +28,48 @@ variable "ZABBIX_PASS" {
   description = "Zabbix password"
 }
 
-variable "db_allocated_storage" {
-  type        = number
-  description = "The allocated storage in gigabytes"
-  default     = 30
+# --------------------- Staging Env -----------------------
+variable "repository_name" {
+  description = "The name of the repository"
+  default     = "get-it-django"
 }
 
-variable "db_max_allocated_storage" {
-  type        = number
-  description = "The max allocated storage in gigabytes"
-  default     = 150
+variable "repository_branch" {
+  description = "The name of the branch"
+  default     = "master"
 }
 
-variable "db_engine" {
+variable "repository_owner" {
+  description = "The name of the repository owner"
+  default     = "RicardoRibeiroRodrigues"
+}
+
+variable "github_token" {
+  description = "The github token"
   type        = string
-  description = "The database engine"
-  default     = "postgres"
+}
+
+variable "artifacts_bucket_name" {
+  description = "S3 Bucket for storing artifacts"
+  default     = "get-it-django-artifacts"
+}
+
+variable "env" {
+  description = "Environment"
+  default     = "dev"
+}
+
+variable "DB_TEST_USER" {
+  type        = string
+  description = "Test Database user"
+}
+
+variable "DB_TEST_PASS" {
+  type        = string
+  description = "Test Database password"
+}
+
+variable "organization" {
+  description = "The name of the organization"
+  default     = "RicardoRibeiroRodrigues"
 }
