@@ -29,7 +29,7 @@ FLUSH PRIVILEGES;
 EOF
 
 # Importar as tabelas do Zabbix
-zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | sudo mysql --default-character-set=utf8mb4 -uzabbix --password='password' zabbix
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | sudo mysql --default-character-set=utf8mb4 -uzabbix --password='${zabbix_pass}' zabbix
 
 # Desativar a opção log_bin_trust_function_creators
 sudo mysql <<EOF
@@ -38,7 +38,7 @@ QUIT;
 EOF
 
 # Configurar a senha do Zabbix no arquivo de configuração
-sudo sed -i 's/^# DBPassword=$/DBPassword=password/' /etc/zabbix/zabbix_server.conf
+sudo sed -i 's/^# DBPassword=$/DBPassword=${zabbix_pass}/' /etc/zabbix/zabbix_server.conf
 
 # Reiniciar serviços
 sudo systemctl restart zabbix-server zabbix-agent apache2

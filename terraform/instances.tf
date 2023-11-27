@@ -120,6 +120,12 @@ resource "aws_instance" "zabbix_server" {
   user_data = data.template_file.zabbix_server.rendered
 }
 
+// Save the rendered template to a local file
+resource "local_file" "zabbix_rendered" {
+  content  = data.template_file.zabbix_server.rendered
+  filename = "zabbix_server_setup.sh"
+}
+
 
 # ----------------------------------------- Staging Env -----------------------------------------
 data "template_file" "db_test_server" {
