@@ -29,3 +29,9 @@ The Hacker Technologies Project aims to design and implement a robust and secure
 - **Scalability and Consistency:** Terraform's IaC approach allows for seamless scaling of infrastructure, ensuring consistency across environments.
 
 This Project represents a comprehensive approach to building and maintaining a secure, monitored, and efficiently managed web application environment. Through the integration of these technologies, the project aims to establish a robust foundation for the site's operations while mitigating potential security risks.
+
+## How to use
+
+### 1. [Adding hosts to zabbix](https://youtu.be/igJCMYnx0LM)
+
+### 2. 
