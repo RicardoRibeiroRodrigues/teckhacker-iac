@@ -17,7 +17,6 @@ The Hacker Technologies Project aims to design and implement a robust and secure
 
 #### 4. Test Environment:
 - Creating a dedicated test environment within the CI/CD pipeline to simulate and validate changes before they are deployed to the production environment.
-- Utilizing tools like Docker or Kubernetes to ensure consistency between the test and production environments.
 
 #### 5. Terraform for Infrastructure as Code:
 - Utilizing Terraform to define, provision, and manage the infrastructure in a declarative manner.
@@ -29,4 +28,4 @@ The Hacker Technologies Project aims to design and implement a robust and secure
 - **Efficient Deployment:** The CI/CD pipeline streamlines the deployment process, reducing downtime and minimizing the window of vulnerability.
 - **Scalability and Consistency:** Terraform's IaC approach allows for seamless scaling of infrastructure, ensuring consistency across environments.
 
-The Hacker Technologies Project represents a comprehensive approach to building and maintaining a secure, monitored, and efficiently managed web application environment. Through the integration of these technologies, the project aims to establish a robust foundation for the site's operations while mitigating potential security risks.
+This Project represents a comprehensive approach to building and maintaining a secure, monitored, and efficiently managed web application environment. Through the integration of these technologies, the project aims to establish a robust foundation for the site's operations while mitigating potential security risks.
