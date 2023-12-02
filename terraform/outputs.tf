@@ -4,7 +4,7 @@ output "js_public_ip" {
 }
 
 output "web_server_public_ip" {
-  value = "Web server IP: ${aws_instance.web_server.public_ip}"
+  value = "Web server IP: ${aws_eip.eip_web_server.public_ip}"
 }
 
 output "template_rendered_db" {
@@ -20,5 +20,5 @@ output "template_rendered_js" {
 }
 
 output "test_server_public_ip" {
-  value = "Test server IP: ${aws_instance.test_server.public_ip}"
+  value = "Test server IP: ${aws_eip.eip_test_server.public_ip}"
 }

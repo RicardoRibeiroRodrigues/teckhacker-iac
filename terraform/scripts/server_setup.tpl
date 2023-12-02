@@ -94,7 +94,6 @@ done
 echo "Banco pronto." >> /home/ubuntu/wait_db.log
 
 # Install Zabbix Agent
-
 wget https://repo.zabbix.com/zabbix/6.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.2-2%2Bubuntu22.04_all.deb
 sudo dpkg -i zabbix-release_6.2-2+ubuntu22.04_all.deb
 sudo apt update
@@ -104,6 +103,7 @@ sudo sed -i "s/Server=127.0.0.1/Server=${zabbix_ip}/" /etc/zabbix/zabbix_agentd.
 sudo sed -i "s/ServerActive=127.0.0.1/ServerActive=${zabbix_ip}/" /etc/zabbix/zabbix_agentd.conf
 sudo sed -i "s/Hostname=Zabbix server/Hostname=${name}/" /etc/zabbix/zabbix_agentd.conf
 
+sudo systemctl enable zabbix-agent
 sudo systemctl restart zabbix-agent
 
 # Download and install CodeDeploy agent
@@ -112,3 +112,4 @@ wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install
 chmod +x ./install
 sudo ./install auto
 sudo service codedeploy-agent start
+sudo service codedeploy-agent enable

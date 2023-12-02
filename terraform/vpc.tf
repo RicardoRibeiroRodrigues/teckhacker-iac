@@ -45,31 +45,26 @@ resource "aws_route_table_association" "subnet_route_table_association" {
   route_table_id = aws_route_table.app_route_table.id
 }
 
-# Create Elastic IP for NAT Gateway
-resource "aws_eip" "nat_gateway" {
-}
-
-# Create NAT Gateway
-resource "aws_nat_gateway" "nat_gateway" {
-  allocation_id = aws_eip.nat_gateway.id
-  subnet_id     = aws_subnet.app_subnet.id
-}
-
-# Create a route table for the private subnet
-resource "aws_route_table" "private_route_table" {
-  vpc_id = aws_vpc.application_vpc.id
+# Create Elastic IP for web server
+resource "aws_eip" "eip_web_server" {
+  domain = "vpc"
+  instance = aws_instance.web_server.id
 
   tags = {
-    Name = "Application Private Route Table"
+    Name = "Web Server IP"
   }
 }
 
-# Add a default route to the NAT Gateway in the private route table
-resource "aws_route" "private_route" {
-  route_table_id         = aws_route_table.private_route_table.id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat_gateway.id
+# Create Elastic IP for test server
+resource "aws_eip" "eip_test_server" {
+  domain = "vpc"
+  instance = aws_instance.test_server.id
+
+  tags = {
+    Name = "Test Server IP"
+  }
 }
+
 
 # --------------------- Staging Env -----------------------
 # Create VPC

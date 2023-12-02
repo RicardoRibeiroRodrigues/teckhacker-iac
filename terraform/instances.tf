@@ -58,9 +58,6 @@ resource "aws_instance" "web_server" {
   tags = {
     Name = "Web Server"
   }
-  # Allocate and associate an Elastic IP
-  associate_public_ip_address = true
-
   user_data = data.template_file.web_server.rendered
 
 
@@ -163,9 +160,6 @@ resource "aws_instance" "test_server" {
   tags = {
     Name = "Test Web Server"
   }
-
-  # Allocate and associate an Elastic IP
-  associate_public_ip_address = true
 
   user_data  = data.template_file.test_web_server.rendered
   depends_on = [aws_instance.db_test_server]
