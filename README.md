@@ -34,4 +34,34 @@ This Project represents a comprehensive approach to building and maintaining a s
 
 ### 1. [Adding hosts to zabbix](https://youtu.be/igJCMYnx0LM)
 
-### 2. 
+
+### How to run
+
+
+#### 1. Create AMIs:
+- Create two AMIs:
+   - One with Ubuntu 22.04 and PostgreSQL installed.
+   - Another with Ubuntu 22.04, PostgreSQL, and the Zabbix Client set up.
+
+#### 2. Set up GitHub Repository:
+- Fork the [get-it-django](https://github.com/RicardoRibeiroRodrigues/get-it-django) repository.
+- [Generate a Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with at least webhook permissions.
+
+#### 3. Configure Environment Variables:
+- Copy `.env.example` to `.env` in the forked repository.
+- Replace the placeholder variables in `.env` with your specific values.
+- Modify relevant variables in the `variables.tf` file in the Terraform folder.
+
+#### 4. Run Terraform:
+- Open a terminal in the `terraform` folder.
+
+```bash
+# Initialize Terraform
+terraform init
+
+# Generate and review the Terraform plan
+terraform plan -out myPlan
+
+# Apply the Terraform plan
+terraform apply myPlan
+
